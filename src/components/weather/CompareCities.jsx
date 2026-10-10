@@ -37,18 +37,19 @@ export default function CompareCities() {
   if (options.length < 2) {
     return (
       <Card title="Compare cities" icon={GitCompare}>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Save at least one more city with the ⭐ on the dashboard to compare.
         </p>
       </Card>
     );
   }
 
-  const select = (value, onChange) => (
+  const select = (label, value, onChange) => (
     <select
+      aria-label={label}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl bg-slate-500/10 px-3 py-2 text-sm outline-none"
+      className="h-11 w-full min-w-0 rounded-xl bg-slate-500/10 px-2 text-base outline-none sm:px-3 sm:text-sm"
     >
       {options.map((c) => (
         <option key={key(c)} value={key(c)}>{c.name}</option>
@@ -58,28 +59,28 @@ export default function CompareCities() {
 
   return (
     <Card title="Compare cities" icon={GitCompare}>
-      <div className="grid grid-cols-[6rem_1fr_1fr] items-center gap-x-3 sm:grid-cols-[9rem_1fr_1fr]">
+      <div className="grid grid-cols-[4.5rem_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-2 sm:grid-cols-[9rem_minmax(0,1fr)_minmax(0,1fr)] sm:gap-x-3">
         <span />
-        {select(aKey, setAKey)}
-        {select(bKey, setBKey)}
+        {select("First city", aKey, setAKey)}
+        {select("Second city", bKey, setBKey)}
 
         <span />
         {results.map((r, i) => {
-          if (!r.data) return <div key={i} className="py-6 text-center text-sm text-slate-500">Loading…</div>;
+          if (!r.data) return <div key={i} className="py-6 text-center text-sm text-slate-600">Loading…</div>;
           const { Icon, label } = describe(r.data.current.weather_code, r.data.current.is_day);
           return (
-            <div key={i} className="flex flex-col items-center py-4">
-              <Icon size={40} className="text-sky-500" />
-              <span className="text-sm">{label}</span>
+            <div key={i} className="flex min-w-0 flex-col items-center py-4 text-center">
+              <Icon size={36} className="text-sky-600 dark:text-sky-400" aria-hidden />
+              <span className="text-xs sm:text-sm">{label}</span>
             </div>
           );
         })}
 
         {ROWS.map(([label, fn]) => (
           <Fragment key={label}>
-            <span className="border-t border-slate-500/10 py-3 text-sm text-slate-500">{label}</span>
+            <span className="border-t border-slate-500/10 py-3 text-xs text-slate-600 sm:text-sm dark:text-slate-400">{label}</span>
             {results.map((r, i) => (
-              <span key={i} className="border-t border-slate-500/10 py-3 text-center text-lg font-semibold">
+              <span key={i} className="min-w-0 border-t border-slate-500/10 py-3 text-center text-base font-semibold sm:text-lg">
                 {r.data ? fn(r.data) : "–"}
               </span>
             ))}

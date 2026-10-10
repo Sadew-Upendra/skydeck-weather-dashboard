@@ -9,16 +9,42 @@ html {
     "Segoe UI",
     Roboto,
     sans-serif;
+  -webkit-text-size-adjust: 100%;
 }
-.leaflet-container {
-  z-index: 0;
+body {
+  min-height: 100dvh;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
+:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(15 23 42 / 0.7);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.safe-pad {
+  --p: 1rem;
+  padding: var(--p);
+  padding-top: max(var(--p), env(safe-area-inset-top));
+  padding-right: max(var(--p), env(safe-area-inset-right));
+  padding-bottom: max(var(--p), env(safe-area-inset-bottom));
+  padding-left: max(var(--p), env(safe-area-inset-left));
+}
+@media (min-width: 768px) {
+  .safe-pad {
+    --p: 1.5rem;
   }
+}
+
+.leaflet-container {
+  z-index: 0;
+  font: inherit;
 }
 
 .drop {
@@ -46,6 +72,10 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
   .drop,
   .flake {
     display: none;

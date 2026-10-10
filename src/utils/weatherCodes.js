@@ -22,6 +22,6 @@ export const MOODS = {
   night: "from-slate-900 via-indigo-950 to-slate-800",
   cloudy: "from-slate-500 via-slate-600 to-slate-800",
   rain: "from-slate-600 via-blue-800 to-slate-900",
-  snow: "from-sky-300 via-slate-400 to-slate-600",
+  snow: "from-sky-500 via-slate-500 to-slate-700",
   storm: "from-gray-800 via-purple-900 to-slate-900",
 };

@@ -15,11 +15,11 @@ export default function DetailCards({ data, className = "" }) {
     { label: "Sunset", icon: Sunset, value: timeLabel(d.sunset[0]) },
   ];
   return (
-    <div className={`grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 ${className}`}>
+    <div className={`grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6 ${className}`}>
       {items.map(({ label, icon, value, sub }) => (
         <Card key={label} title={label} icon={icon}>
-          <p className="text-2xl font-semibold">{value}</p>
-          {sub && <p className="text-xs text-slate-500 dark:text-slate-400">{sub}</p>}
+          <p className="break-words text-xl font-semibold sm:text-2xl">{value}</p>
+          {sub && <p className="text-xs text-slate-600 dark:text-slate-400">{sub}</p>}
         </Card>
       ))}
     </div>

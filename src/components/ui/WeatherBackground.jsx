@@ -3,7 +3,8 @@ import { useMemo } from "react";
 const COUNT = { rain: 70, storm: 100, snow: 50 };
 
 export default function WeatherBackground({ mood }) {
-  const n = COUNT[mood] ?? 0;
+  const scale = typeof window !== "undefined" && window.innerWidth < 640 ? 0.5 : 1;
+  const n = Math.round((COUNT[mood] ?? 0) * scale);
   const snow = mood === "snow";
 
   const items = useMemo(

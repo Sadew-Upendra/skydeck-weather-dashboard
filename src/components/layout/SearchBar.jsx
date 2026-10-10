@@ -27,28 +27,37 @@ export default function SearchBar() {
     setOpen(false);
   };
 
+  const showList = open && data.length > 0;
+
   return (
-    <div className="relative w-full">
-      <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70" />
+    <div
+      className="relative w-full"
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }}
+    >
+      <Search size={18} aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/80" />
       <input
+        type="search"
         value={text}
         onChange={(e) => { setText(e.target.value); setOpen(true); }}
         onFocus={() => setOpen(true)}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
         placeholder="Search city…"
         aria-label="Search city"
-        className="h-11 w-full rounded-full bg-white/20 pl-11 pr-4 text-white placeholder-white/70 outline-none ring-1 ring-white/20 backdrop-blur focus:ring-2 focus:ring-white/60"
+        autoComplete="off"
+        className="h-11 w-full rounded-full bg-white/20 pl-11 pr-4 text-base text-white placeholder-white/80 outline-none ring-1 ring-white/30 backdrop-blur focus:ring-2 focus:ring-white"
       />
-      {open && data.length > 0 && (
-        <ul className="absolute z-20 mt-2 w-full overflow-hidden rounded-2xl bg-white text-slate-900 shadow-xl">
+      <p className="sr-only" aria-live="polite">{showList ? `${data.length} results` : ""}</p>
+
+      {showList && (
+        <ul
+          aria-label="Search results"
+          className="absolute z-30 mt-2 max-h-72 w-full overflow-y-auto rounded-2xl bg-white text-slate-900 shadow-xl"
+        >
           {data.map((r) => (
             <li key={r.id}>
-              <button
-                onMouseDown={() => pick(r)}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-100"
-              >
+              <button onClick={() => pick(r)} className="min-h-11 w-full px-4 py-2.5 text-left text-sm hover:bg-slate-100">
                 <span className="font-medium">{r.name}</span>
-                <span className="text-slate-500">
+                <span className="text-slate-600">
                   {[r.admin1, r.country].filter(Boolean).map((x) => `, ${x}`).join("")}
                 </span>
               </button>
