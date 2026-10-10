@@ -43,3 +43,19 @@ export function fetchAirQuality({ latitude, longitude }) {
   });
   return getJSON(`${AIR}?${params}`);
 }
+
+export function fetchTrends({ latitude, longitude }, unit) {
+  const f = unit === "F";
+  const params = new URLSearchParams({
+    latitude,
+    longitude,
+    daily:
+      "temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max",
+    timezone: "auto",
+    forecast_days: 16,
+    temperature_unit: f ? "fahrenheit" : "celsius",
+    wind_speed_unit: f ? "mph" : "kmh",
+    precipitation_unit: f ? "inch" : "mm",
+  });
+  return getJSON(`${FORECAST}?${params}`);
+}
