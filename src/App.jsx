@@ -12,6 +12,7 @@ import DetailCards from "./components/weather/DetailCards";
 import AirQuality from "./components/weather/AirQuality";
 import TempChart from "./components/charts/TempChart";
 import RadarMap from "./components/map/RadarMap";
+import WeatherBackground from "./components/ui/WeatherBackground";
 
 export default function App() {
   const { city, unit, theme } = useAppStore();
@@ -22,18 +23,25 @@ export default function App() {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
-  const mood = data ? describe(data.current.weather_code, data.current.is_day).mood : "night";
+  const mood = data
+    ? describe(data.current.weather_code, data.current.is_day).mood
+    : "night";
 
   return (
-    <div className={`min-h-screen bg-linear-to-br ${MOODS[mood]} transition-colors duration-700`}>
-      <div className="mx-auto max-w-7xl space-y-4 p-4 md:p-6">
+    <div
+      className={`min-h-screen bg-linear-to-br ${MOODS[mood]} transition-colors duration-700`}
+    >
+      <WeatherBackground mood={mood} />
+      <div className="relative z-10 mx-auto max-w-7xl space-y-4 p-4 md:p-6">
         <Header />
         <SavedCities />
 
         {weather.isError && (
           <div className="rounded-2xl bg-red-500/20 p-4 text-white">
             Couldn't load weather. {weather.error.message}{" "}
-            <button className="underline" onClick={() => weather.refetch()}>Retry</button>
+            <button className="underline" onClick={() => weather.refetch()}>
+              Retry
+            </button>
           </div>
         )}
 
@@ -59,7 +67,12 @@ export default function App() {
 
         <footer className="py-4 text-center text-xs text-white/70">
           Weather data by{" "}
-          <a className="underline" href="https://open-meteo.com" target="_blank" rel="noreferrer">
+          <a
+            className="underline"
+            href="https://open-meteo.com"
+            target="_blank"
+            rel="noreferrer"
+          >
             Open-Meteo.com
           </a>{" "}
           (CC BY 4.0)

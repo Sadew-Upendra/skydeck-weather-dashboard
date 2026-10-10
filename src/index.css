@@ -20,3 +20,34 @@ html {
     transition: none !important;
   }
 }
+
+.drop {
+  position: absolute;
+  top: -20px;
+  width: 2px;
+  height: 16px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.6));
+  animation: fall linear infinite;
+}
+.flake {
+  position: absolute;
+  top: -10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drop,
+  .flake {
+    display: none;
+  }
+}
