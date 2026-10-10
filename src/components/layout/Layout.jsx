@@ -3,9 +3,11 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAppStore } from "../../store/useAppStore";
 import { useWeather } from "../../hooks/useWeather";
 import { describe, MOODS } from "../../utils/weatherCodes";
+import { hideSplash } from "../../utils/splash";
 import Header from "./Header";
 import SavedCities from "./SavedCities";
-import Skeleton from "../ui/Skeleton";
+import PageLoader from "../ui/PageLoader";
+import TopLoader from "../ui/TopLoader";
 import WeatherBackground from "../ui/WeatherBackground";
 import ErrorBoundary from "../ErrorBoundary";
 
@@ -25,10 +27,17 @@ export default function Layout() {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
+  useEffect(() => {
+    if (weather.isPending) return;
+    const t = setTimeout(hideSplash, Math.max(0, 900 - performance.now()));
+    return () => clearTimeout(t);
+  }, [weather.isPending]);
+
   const mood = data ? describe(data.current.weather_code, data.current.is_day).mood : "night";
 
   return (
     <div className="relative min-h-dvh overflow-x-clip">
+      <TopLoader />
       <div
         aria-hidden
         className={`fixed inset-0 -z-10 bg-linear-to-br ${MOODS[mood]} transition-colors duration-700`}
@@ -65,7 +74,7 @@ export default function Layout() {
 
         <main id="main" tabIndex={-1} className="space-y-4 outline-none">
           <ErrorBoundary key={pathname} name="This page">
-            <Suspense fallback={<Skeleton className="h-64" />}>
+            <Suspense fallback={<PageLoader />}>
               <Outlet />
             </Suspense>
           </ErrorBoundary>

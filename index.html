@@ -1,16 +1,170 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="description" content="SkyDeck – a responsive weather dashboard." />
-    <title>SkyDeck — Weather Dashboard</title>
-  </head>
-  <body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="SkyDeck – a responsive weather dashboard." />
+  <title>SkyDeck — Weather Dashboard</title>
+
+  <!-- Splash styles are inline so the loader shows before any JS/CSS bundle loads -->
+  <style>
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #0ea5e9 0%, #4f46e5 60%, #312e81 100%);
+      color: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    #splash.splash-hide {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .sp-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .sp-logo {
+      width: min(40vw, 150px);
+      height: auto;
+      overflow: visible;
+    }
+
+    .sp-rays,
+    .sp-sun {
+      transform-box: view-box;
+      transform-origin: 318px 196px;
+    }
+
+    .sp-rays {
+      animation: sp-spin 14s linear infinite;
+    }
+
+    .sp-sun {
+      animation: sp-pulse 2.4s ease-in-out infinite;
+    }
+
+    .sp-cloud {
+      animation: sp-float 3.2s ease-in-out infinite;
+    }
+
+    .sp-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .sp-sub {
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    .sp-bar {
+      width: min(60vw, 220px);
+      height: 4px;
+      border-radius: 999px;
+      background: rgb(255 255 255 / 0.25);
+      overflow: hidden;
+    }
+
+    .sp-bar::after {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 40%;
+      border-radius: 999px;
+      background: #fff;
+      animation: sp-load 1.2s ease-in-out infinite;
+    }
+
+    @keyframes sp-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes sp-pulse {
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes sp-float {
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    @keyframes sp-load {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(250%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #splash * {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <div id="splash" role="status" aria-live="polite" aria-label="Loading SkyDeck">
+    <div class="sp-wrap">
+      <svg class="sp-logo" viewBox="110 50 360 360" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="spSun" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#fde047" />
+            <stop offset="1" stop-color="#fb923c" />
+          </linearGradient>
+        </defs>
+        <g class="sp-rays" stroke="#fde047" stroke-width="18" stroke-linecap="round">
+          <path d="M318 94V70" />
+          <path d="M318 94V70" transform="rotate(45 318 196)" />
+          <path d="M318 94V70" transform="rotate(90 318 196)" />
+          <path d="M318 94V70" transform="rotate(135 318 196)" />
+          <path d="M318 94V70" transform="rotate(180 318 196)" />
+          <path d="M318 94V70" transform="rotate(225 318 196)" />
+          <path d="M318 94V70" transform="rotate(270 318 196)" />
+          <path d="M318 94V70" transform="rotate(315 318 196)" />
+        </g>
+        <circle class="sp-sun" cx="318" cy="196" r="74" fill="url(#spSun)" />
+        <g class="sp-cloud" fill="#fff">
+          <circle cx="190" cy="318" r="58" />
+          <circle cx="262" cy="288" r="76" />
+          <circle cx="340" cy="332" r="52" />
+          <rect x="132" y="330" width="260" height="56" rx="28" />
+        </g>
+      </svg>
+      <div class="sp-title">SkyDeck</div>
+      <div class="sp-sub">Fetching your forecast…</div>
+      <div class="sp-bar"></div>
+    </div>
+  </div>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
