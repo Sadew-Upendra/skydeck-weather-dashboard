@@ -10,9 +10,9 @@ import HourlyForecast from "../components/weather/HourlyForecast";
 import DailyForecast from "../components/weather/DailyForecast";
 import AirQuality from "../components/weather/AirQuality";
 import DetailCards from "../components/weather/DetailCards";
-import TempChart from "../components/charts/TempChart";
 
 const RadarMap = lazy(() => import("../components/map/RadarMap"));
+const TempChart = lazy(() => import("../components/charts/TempChart"));
 
 export default function Dashboard() {
   const { city, unit } = useAppStore();
@@ -46,7 +46,9 @@ export default function Dashboard() {
         <CurrentWeather data={data} className="md:col-span-2" />
         <HourlyForecast data={data} className="md:col-span-2" />
         <ErrorBoundary name="Chart" className="md:col-span-2">
-          <TempChart data={data} className="md:col-span-2" />
+          <Suspense fallback={<Skeleton className="h-64 md:col-span-2" />}>
+            <TempChart data={data} className="md:col-span-2" />
+          </Suspense>
         </ErrorBoundary>
         <DailyForecast data={data} className="lg:col-start-3 lg:row-span-2 lg:row-start-1" />
         <AirQuality air={air.data} />
