@@ -93,3 +93,57 @@ body {
     transform: translateX(300%);
   }
 }
+
+/* Alert notifications */
+.toast-in {
+  animation: toast-in 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.toast-progress {
+  animation: toast-progress 10s linear forwards;
+  transform-origin: left;
+}
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.sheet-in {
+  animation: sheet-in 0.28s ease-out both;
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bell-pulse {
+  animation: bell-pulse 1.8s ease-out infinite;
+}
+@keyframes bell-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(220 38 38 / 0.6);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgb(220 38 38 / 0);
+  }
+}

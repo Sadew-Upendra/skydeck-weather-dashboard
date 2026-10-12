@@ -10,6 +10,7 @@ import PageLoader from "../ui/PageLoader";
 import TopLoader from "../ui/TopLoader";
 import WeatherBackground from "../ui/WeatherBackground";
 import ErrorBoundary from "../ErrorBoundary";
+import AlertToast from "../alerts/AlertToast";
 
 const tabs = [
   ["/", "Dashboard"],
@@ -43,6 +44,7 @@ export default function Layout() {
         className={`fixed inset-0 -z-10 bg-linear-to-br ${MOODS[mood]} transition-colors duration-700`}
       />
       <WeatherBackground mood={mood} />
+      <AlertToast />
 
       <a
         href="#main"
