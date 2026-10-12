@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
 import { useAppStore } from "../store/useAppStore";
 import { useWeather } from "../hooks/useWeather";
-import { getAlerts } from "../utils/alerts";
+import { useAlerts } from "../hooks/useAlerts";
+import { useAlertStore } from "../store/useAlertStore";
 import ErrorBoundary from "../components/ErrorBoundary";
 import Skeleton from "../components/ui/Skeleton";
-import AlertBanner from "../components/weather/AlertBanner";
 import CurrentWeather from "../components/weather/CurrentWeather";
 import HourlyForecast from "../components/weather/HourlyForecast";
 import DailyForecast from "../components/weather/DailyForecast";
@@ -17,6 +17,8 @@ const TempChart = lazy(() => import("../components/charts/TempChart"));
 export default function Dashboard() {
   const { city, unit } = useAppStore();
   const { weather, air } = useWeather(city, unit);
+  const { alerts } = useAlerts();
+  const openPanel = useAlertStore((s) => s.openPanel);
   const data = weather.data;
 
   if (weather.isError) {
@@ -39,26 +41,31 @@ export default function Dashboard() {
   }
 
   return (
-    <>
-      <AlertBanner alerts={getAlerts(data, air.data, unit)} />
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <CurrentWeather data={data} className="md:col-span-2" />
-        <HourlyForecast data={data} className="md:col-span-2" />
-        <ErrorBoundary name="Chart" className="md:col-span-2">
-          <Suspense fallback={<Skeleton className="h-64 md:col-span-2" />}>
-            <TempChart data={data} className="md:col-span-2" />
-          </Suspense>
-        </ErrorBoundary>
-        <DailyForecast data={data} className="lg:col-start-3 lg:row-span-2 lg:row-start-1" />
-        <AirQuality air={air.data} />
-        <DetailCards data={data} className="md:col-span-2 lg:col-span-3" />
-        <ErrorBoundary name="Radar" className="md:col-span-2 lg:col-span-3">
-          <Suspense fallback={<Skeleton className="h-80 md:col-span-2 lg:col-span-3" />}>
-            <RadarMap city={city} className="md:col-span-2 lg:col-span-3" />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
-    </>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <CurrentWeather
+        data={data}
+        updatedAt={weather.dataUpdatedAt}
+        fetching={weather.isFetching || air.isFetching}
+        onRefresh={() => { weather.refetch(); air.refetch(); }}
+        alert={alerts[0]}
+        alertCount={alerts.length}
+        onOpenAlerts={openPanel}
+        className="md:col-span-2"
+      />
+      <HourlyForecast data={data} className="md:col-span-2" />
+      <ErrorBoundary name="Chart" className="md:col-span-2">
+        <Suspense fallback={<Skeleton className="h-64 md:col-span-2" />}>
+          <TempChart data={data} className="md:col-span-2" />
+        </Suspense>
+      </ErrorBoundary>
+      <DailyForecast data={data} className="lg:col-start-3 lg:row-span-2 lg:row-start-1" />
+      <AirQuality air={air.data} />
+      <DetailCards data={data} className="md:col-span-2 lg:col-span-3" />
+      <ErrorBoundary name="Radar" className="md:col-span-2 lg:col-span-3">
+        <Suspense fallback={<Skeleton className="h-80 md:col-span-2 lg:col-span-3" />}>
+          <RadarMap city={city} className="md:col-span-2 lg:col-span-3" />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
   );
 }

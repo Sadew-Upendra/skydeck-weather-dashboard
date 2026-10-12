@@ -8,11 +8,13 @@ export function useWeather(city, unit) {
     queryKey: ["forecast", city.latitude, city.longitude, unit],
     queryFn: () => fetchForecast(city, unit),
     staleTime: TEN_MIN,
+    refetchInterval: TEN_MIN,
   });
   const air = useQuery({
     queryKey: ["air", city.latitude, city.longitude],
     queryFn: () => fetchAirQuality(city),
     staleTime: TEN_MIN,
+    refetchInterval: TEN_MIN,
   });
   return { weather, air };
 }

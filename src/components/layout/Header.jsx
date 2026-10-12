@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { LocateFixed, Moon, Sun } from "lucide-react";
 import { useAppStore } from "../../store/useAppStore";
 import SearchBar from "./SearchBar";
+import AlertCenter from "../alerts/AlertCenter";
 
 const btn =
   "grid h-11 min-w-11 place-items-center rounded-full bg-white/20 px-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/30";
@@ -17,7 +18,7 @@ export default function Header() {
     );
 
   return (
-    <header className="flex flex-wrap items-center gap-3">
+    <header className="relative z-30 flex flex-wrap items-center gap-3">
       <Link to="/" className="flex items-center gap-2 rounded-full text-white">
         <img src="/favicon.svg" alt="" className="h-9 w-9" />
         <span className="text-xl font-semibold tracking-tight max-[359px]:sr-only">SkyDeck</span>
@@ -28,6 +29,7 @@ export default function Header() {
       </div>
 
       <div className="ml-auto flex gap-2 md:ml-0">
+        <AlertCenter buttonClass={btn} />
         <button onClick={locate} className={btn} aria-label="Use my location">
           <LocateFixed size={18} />
         </button>
