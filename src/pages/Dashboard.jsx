@@ -10,6 +10,7 @@ import HourlyForecast from "../components/weather/HourlyForecast";
 import DailyForecast from "../components/weather/DailyForecast";
 import AirQuality from "../components/weather/AirQuality";
 import DetailCards from "../components/weather/DetailCards";
+import InsightsCard from "../components/weather/InsightsCard";
 
 const RadarMap = lazy(() => import("../components/map/RadarMap"));
 const TempChart = lazy(() => import("../components/charts/TempChart"));
@@ -60,6 +61,7 @@ export default function Dashboard() {
       </ErrorBoundary>
       <DailyForecast data={data} className="lg:col-start-3 lg:row-span-2 lg:row-start-1" />
       <AirQuality air={air.data} />
+      <InsightsCard data={data} unit={unit} className="md:col-span-2 lg:col-span-3" />
       <DetailCards data={data} className="md:col-span-2 lg:col-span-3" />
       <ErrorBoundary name="Radar" className="md:col-span-2 lg:col-span-3">
         <Suspense fallback={<Skeleton className="h-80 md:col-span-2 lg:col-span-3" />}>
