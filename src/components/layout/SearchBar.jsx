@@ -4,15 +4,35 @@ import { Search } from "lucide-react";
 import { searchCities } from "../../api/weather";
 import { useAppStore } from "../../store/useAppStore";
 
-export default function SearchBar() {
+const TONES = {
+  glass: {
+    icon: "text-white/80",
+    input:
+      "bg-white/20 text-white placeholder-white/80 ring-white/30 backdrop-blur focus:ring-white",
+  },
+  solid: {
+    icon: "text-slate-500",
+    input:
+      "bg-slate-500/10 text-slate-900 placeholder-slate-500 ring-slate-400/40 focus:ring-sky-500 dark:text-white dark:placeholder-slate-400",
+  },
+};
+
+export default function SearchBar({
+  onSelect,
+  tone = "glass",
+  placeholder = "Search city…",
+  label = "Search city",
+}) {
   const [text, setText] = useState("");
   const [debounced, setDebounced] = useState("");
   const [open, setOpen] = useState(false);
   const setCity = useAppStore((s) => s.setCity);
+  const handle = onSelect ?? setCity;
+  const t = TONES[tone];
 
   useEffect(() => {
-    const t = setTimeout(() => setDebounced(text.trim()), 350);
-    return () => clearTimeout(t);
+    const id = setTimeout(() => setDebounced(text.trim()), 350);
+    return () => clearTimeout(id);
   }, [text]);
 
   const { data = [] } = useQuery({
@@ -22,7 +42,7 @@ export default function SearchBar() {
   });
 
   const pick = (r) => {
-    setCity({ name: r.name, country: r.country ?? "", latitude: r.latitude, longitude: r.longitude });
+    handle({ name: r.name, country: r.country ?? "", latitude: r.latitude, longitude: r.longitude });
     setText("");
     setOpen(false);
   };
@@ -34,17 +54,17 @@ export default function SearchBar() {
       className="relative w-full"
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }}
     >
-      <Search size={18} aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/80" />
+      <Search size={18} aria-hidden className={`pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 ${t.icon}`} />
       <input
         type="search"
         value={text}
         onChange={(e) => { setText(e.target.value); setOpen(true); }}
         onFocus={() => setOpen(true)}
         onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-        placeholder="Search city…"
-        aria-label="Search city"
+        placeholder={placeholder}
+        aria-label={label}
         autoComplete="off"
-        className="h-11 w-full rounded-full bg-white/20 pl-11 pr-4 text-base text-white placeholder-white/80 outline-none ring-1 ring-white/30 backdrop-blur focus:ring-2 focus:ring-white"
+        className={`h-11 w-full rounded-full pl-11 pr-4 text-base outline-none ring-1 focus:ring-2 ${t.input}`}
       />
       <p className="sr-only" aria-live="polite">{showList ? `${data.length} results` : ""}</p>
 
