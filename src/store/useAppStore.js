@@ -13,9 +13,11 @@ export const useAppStore = create(
     (set) => ({
       city: DEFAULT_CITY,
       saved: [],
+      compare: [],
       unit: "C",
       theme: "dark",
       setCity: (city) => set({ city }),
+      setCompare: (compare) => set({ compare }),
       toggleUnit: () => set((s) => ({ unit: s.unit === "C" ? "F" : "C" })),
       toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
       toggleSaved: (c) =>
