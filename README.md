@@ -29,8 +29,9 @@
 - 🌬️ **Detail cards**: wind, humidity, UV index, pressure, sunrise, sunset
 - 🍃 **Air quality** (US AQI, PM2.5, PM10) with a colour-coded scale
 - 🛰️ **Live precipitation radar** (Leaflet + RainViewer)
-- ⚖️ **Compare cities** side by side
-- ⚠️ **Smart alerts** derived from the data (heat, cold, storms, wind, UV, air quality)
+- ⚖️ **Compare up to 4 cities** side by side (search or quick-add) with Warmest / Coolest / Wettest / Windiest badges
+- ⚠️ **Smart alerts**: a severity-coloured banner with expandable details, safety tips and dismiss/restore
+- 🧭 **Today's guide**: what to wear plus a 24-hour outdoor comfort timeline with the best time to go out
 - ⭐ **Saved cities**, °C/°F toggle and dark/light mode (persisted locally)
 - 🎨 **Dynamic themes and animated rain/snow** that follow the weather
 - ⏳ **Branded splash screen**, top progress bar and skeleton loaders
@@ -98,7 +99,7 @@ Open http://localhost:5173. No `.env` file or API keys are needed.
 ```
 skydeck-weather-dashboard/
 ├── .github/workflows/ci.yml
-├── public/                  # favicon
+├── public/                  # favicon, PWA icons
 ├── src/
 │   ├── api/weather.js       # Open-Meteo fetchers (forecast, air, geocoding, trends)
 │   ├── components/
@@ -166,7 +167,7 @@ After deploying, update the live-demo link in this README.
 
 ## Roadmap
 
-- [ ] Weather alerts from official feeds
+- [ ] Official weather-warning feeds
 - [ ] Animated radar playback
 - [ ] Multi-language support
 - [ ] Hourly "what to wear" suggestions
