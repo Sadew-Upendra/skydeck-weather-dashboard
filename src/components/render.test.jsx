@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import { renderToString } from "react-dom/server";
 import AlertPanel from "./alerts/AlertPanel";
 import InsightsCard from "./weather/InsightsCard";
+import SunCard from "./weather/SunCard";
+import AirQuality from "./weather/AirQuality";
 
 const alerts = [
   {
@@ -87,5 +89,30 @@ describe("render smoke tests", () => {
     expect(html).toContain("Today&#x27;s guide");
     expect(html).toContain("Best time");
     expect(html).toContain("Sunscreen and sunglasses");
+  });
+
+  it("renders the compact sun card with times, countdown and progress", () => {
+    const data = {
+      current: { time: "2026-10-12T14:00" },
+      daily: {
+        sunrise: ["2026-10-12T06:00", "2026-10-13T06:00"],
+        sunset: ["2026-10-12T18:00", "2026-10-13T18:00"],
+      },
+    };
+    const html = renderToString(<SunCard data={data} />);
+    expect(html).toContain("Sunrise");
+    expect(html).toContain("Sunset");
+    expect(html).toContain("12 h 0 m of daylight");
+    expect(html).toContain("width:67%");
+    expect(html).toContain("Sunset in 4 h 0 m");
+  });
+
+  it("renders air quality with advice and pollutant tiles", () => {
+    const air = { current: { us_aqi: 42, pm2_5: 9.4, pm10: 18.2, ozone: 61, nitrogen_dioxide: 12 } };
+    const html = renderToString(<AirQuality air={air} />);
+    expect(html).toContain("Good");
+    expect(html).toContain("great");
+    expect(html).toContain("PM2.5");
+    expect(html).toContain("µg/m³");
   });
 });
