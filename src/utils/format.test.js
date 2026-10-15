@@ -11,6 +11,7 @@ describe("format utils", () => {
   it("classifies AQI", () => {
     expect(aqiInfo(30).label).toBe("Good");
     expect(aqiInfo(120).label).toBe("Unhealthy for sensitive groups");
+    expect(aqiInfo(30).advice).toMatch(/great/i);
   });
 
   it("classifies UV", () => {

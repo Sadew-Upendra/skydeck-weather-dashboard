@@ -26,12 +26,12 @@ export function nextHours(data, n = 24) {
 }
 
 export function aqiInfo(v) {
-  if (v <= 50) return { label: "Good", color: "bg-green-500" };
-  if (v <= 100) return { label: "Moderate", color: "bg-yellow-500" };
-  if (v <= 150) return { label: "Unhealthy for sensitive groups", color: "bg-orange-500" };
-  if (v <= 200) return { label: "Unhealthy", color: "bg-red-500" };
-  if (v <= 300) return { label: "Very unhealthy", color: "bg-purple-600" };
-  return { label: "Hazardous", color: "bg-rose-900" };
+  if (v <= 50) return { label: "Good", color: "bg-green-500", advice: "Air quality is great. A good day to be outside." };
+  if (v <= 100) return { label: "Moderate", color: "bg-yellow-500", advice: "Acceptable for most people." };
+  if (v <= 150) return { label: "Unhealthy for sensitive groups", color: "bg-orange-500", advice: "Sensitive groups should limit long outdoor activity." };
+  if (v <= 200) return { label: "Unhealthy", color: "bg-red-500", advice: "Everyone may start to feel effects. Take it easy outdoors." };
+  if (v <= 300) return { label: "Very unhealthy", color: "bg-purple-600", advice: "Avoid outdoor exercise and keep windows closed." };
+  return { label: "Hazardous", color: "bg-rose-900", advice: "Stay indoors and avoid physical activity outside." };
 }
 
 export function uvInfo(v) {
